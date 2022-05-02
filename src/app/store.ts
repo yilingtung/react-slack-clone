@@ -1,10 +1,12 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
-import themeModeReducer from '../features/themeSlice';
+import themeReducer from '../features/themeSlice';
+import globalReducer from '../features/globalSlice';
 import counterReducer from '../features/counterSlice';
 
 export const store = configureStore({
   reducer: {
-    themeMode: themeModeReducer,
+    theme: themeReducer,
+    global: globalReducer,
     counter: counterReducer,
   },
 });

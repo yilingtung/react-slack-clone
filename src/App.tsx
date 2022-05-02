@@ -1,6 +1,7 @@
-import { BrowserRouter, Routes, Route, Outlet } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 import ThemeWrapper from './components/ThemeWrapper';
+import LayoutMain from './components/LayoutMain';
 import Home from './pages/Home';
 
 import './App.css';
@@ -11,7 +12,7 @@ function App() {
       <ThemeWrapper>
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={<Outlet />}>
+            <Route path="/" element={<LayoutMain />}>
               <Route index element={<Home />} />
             </Route>
           </Routes>

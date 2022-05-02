@@ -4,16 +4,33 @@ import Avatar from '@material-ui/core/Avatar';
 import AccessTimeIcon from '@material-ui/icons/AccessTime';
 import SearchIcon from '@material-ui/icons/Search';
 import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import {
+  selectMobileSidebarOpen,
+  setMobileSidebarOpen,
+} from '../../features/globalSlice';
+import { useBreakpoint } from 'styled-breakpoints/react-styled';
 
 type Props = {
   className?: string;
 };
 
 export function Navigation({ className }: Props) {
+  const isLg = useBreakpoint(up('lg'));
+  const isMobileSidebarOpen = useAppSelector(selectMobileSidebarOpen);
+  const dispatch = useAppDispatch();
+
   return (
-    <NavigationWrapper className={className} role="navigation">
+    <NavigationContainer className={className} role="navigation">
       <LeftContainer>
-        <AccessTimeIcon />
+        <AccessTimeIcon
+          onClick={() => {
+            if (isLg) {
+              return;
+            }
+            dispatch(setMobileSidebarOpen(!isMobileSidebarOpen));
+          }}
+        />
       </LeftContainer>
       <SearchContainer>
         <SearchIcon fontSize="small" />
@@ -26,11 +43,11 @@ export function Navigation({ className }: Props) {
         <HelpOutlineIcon fontSize="small" />
         <Avatar variant="rounded" />
       </RightContainer>
-    </NavigationWrapper>
+    </NavigationContainer>
   );
 }
 
-const NavigationWrapper = styled.div`
+const NavigationContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -40,6 +57,8 @@ const NavigationWrapper = styled.div`
   background-color: ${(props) =>
     `rgba(${props.theme.colors['navigation-bg']},1)`};
   color: ${(props) => `rgba(${props.theme.colors['navigation-text']},1)`};
+  border-bottom: 1px solid
+    ${(props) => `rgba(${props.theme.colors['navigation-text']},0.1)`};
 `;
 
 const LeftContainer = styled.div`

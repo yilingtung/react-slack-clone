@@ -17,7 +17,7 @@ const initialState: CounterState = {
 };
 
 export const themeSlice = createSlice({
-  name: 'themeMode',
+  name: 'theme',
   initialState,
   reducers: {
     setThemeMode: (state, action: PayloadAction<ThemeModeEnum>) => {
@@ -28,6 +28,6 @@ export const themeSlice = createSlice({
 
 export const { setThemeMode } = themeSlice.actions;
 
-export const selectThemeMode = (state: RootState) => state.themeMode.themeMode;
+export const selectThemeMode = (state: RootState) => state.theme.themeMode;
 
 export default themeSlice.reducer;

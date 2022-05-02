@@ -1,21 +1,14 @@
 import styled from 'styled-components';
 
-import Navigation from '../../components/Navigation';
-import Sidebar from '../../components/Sidebar';
-
 export function Home() {
-  return (
-    <HomeWrapper>
-      <Navigation />
-      <Sidebar />
-    </HomeWrapper>
-  );
+  return <HomeWrapper>home</HomeWrapper>;
 }
 
 const HomeWrapper = styled.div`
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: ${(props) =>
+    `calc(100vh - ${props.theme.sizes['navigation_height']}px)`};
   background-color: ${(props) =>
     `rgba(${props.theme.colors['primary_background']},1)`};
-  overflow: hidden;
+  overflow-y: auto;
 `;

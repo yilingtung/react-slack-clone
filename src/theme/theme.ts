@@ -1,16 +1,14 @@
 import { DefaultTheme } from 'styled-components';
-import { createTheme } from 'styled-breakpoints';
 import themeColors from './colors';
-
-const breakpoints = createTheme({
-  sm: '576px',
-  md: '768px',
-  lg: '992px',
-});
+import { breakpointTheme } from './breakpoints';
 
 const theme: DefaultTheme = {
-  ...breakpoints,
+  ...breakpointTheme,
   colors: themeColors.light,
+  sizes: {
+    sidebar_width: 280,
+    navigation_height: 42,
+  },
 };
 
 export default theme;

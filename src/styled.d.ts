@@ -21,5 +21,6 @@ declare module 'styled-components' {
       'sidebar-text': string;
       'sidebar-text--selected': string;
     };
+    sizes: { sidebar_width: number; navigation_height: number };
   }
 }
