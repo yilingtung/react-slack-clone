@@ -57,7 +57,7 @@ const NavigationContainer = styled.div`
   background-color: ${(props) =>
     `rgba(${props.theme.colors['navigation-bg']},1)`};
   color: ${(props) => `rgba(${props.theme.colors['navigation-text']},1)`};
-  border-bottom: 1px solid
+  box-shadow: 0 1px 0 0
     ${(props) => `rgba(${props.theme.colors['navigation-text']},0.1)`};
 `;
 

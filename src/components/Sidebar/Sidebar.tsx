@@ -118,9 +118,9 @@ const SidebarHeader = styled.div`
   display: flex;
   align-items: center;
   flex-shrink: 0;
-  height: 50px;
+  height: 49px;
   padding: 0 16px;
-  border-bottom: 1px solid
+  box-shadow: 0 1px 0 0
     ${(props) => `rgba(${props.theme.colors['navigation-text']},0.1)`};
 
   :hover {
@@ -155,6 +155,7 @@ const WorkspaceNameContainer = styled.div`
     background-color: transparent;
 
     > span {
+      display: block;
       min-width: 0;
       font-size: 18px;
       line-height: 1.33334;
@@ -162,7 +163,6 @@ const WorkspaceNameContainer = styled.div`
       text-overflow: ellipsis;
       overflow: hidden;
       white-space: nowrap;
-      display: block;
       color: ${(props) =>
         `rgba(${props.theme.colors['sidebar-text--selected']},1)`};
     }
