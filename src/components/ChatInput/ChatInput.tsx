@@ -22,11 +22,11 @@ export function ChatInput({
     (e: React.SyntheticEvent) => {
       e.preventDefault();
 
-      if (typeof onSubmit === 'function') {
+      if (typeof onSubmit === 'function' && value) {
         onSubmit();
       }
     },
-    [onSubmit]
+    [onSubmit, value]
   );
 
   return (
@@ -71,7 +71,7 @@ const ChatInputContainer = styled.div`
 
       :focus {
         border: 1px solid
-          rgba(${(props) => props.theme.colors['primary_foreground']}, 0.8);
+          rgba(${(props) => props.theme.colors['primary_foreground']}, 0.6);
       }
 
       ::placeholder {
@@ -100,14 +100,12 @@ const StyledSendButton = styled.button<StyledSendButtonProps>`
   border: none;
   overflow: hidden;
   background-color: transparent;
+  cursor: ${(props) => (props.disabled ? 'inherit' : 'pointer')};
 
   > .MuiSvgIcon-root {
-    color: rgba(
-      ${(props) =>
-        props.disabled
-          ? props.theme.colors['primary_foreground']
-          : props.theme.colors['sidebar-bg--selected']},
-      1
-    );
+    color: ${(props) =>
+      props.disabled
+        ? `rgba(${props.theme.colors['primary_foreground']}, 0.3)`
+        : `rgba(${props.theme.colors['sidebar-bg--selected']}, 1)`};
   }
 `;

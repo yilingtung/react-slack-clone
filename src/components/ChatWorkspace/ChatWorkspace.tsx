@@ -11,6 +11,7 @@ import ChatMessage from '../ChatMessage';
 export function ChatWorkspace() {
   const dispatch = useAppDispatch();
   const message = useAppSelector(selectChatChannelMessage);
+  const isInputEmpty = !(typeof message === 'string' && message);
 
   const handleInputChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -54,6 +55,7 @@ export function ChatWorkspace() {
         placeholder="Message "
         value={message}
         onChange={handleInputChange}
+        disabled={isInputEmpty}
       />
     </ChatWorkspaceContainer>
   );
