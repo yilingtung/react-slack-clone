@@ -6,25 +6,36 @@ import { SvgIconTypeMap } from '@material-ui/core';
 type Props = {
   Icon?: OverridableComponent<SvgIconTypeMap>;
   withIconBg?: boolean;
+  actived?: boolean;
   title?: string;
   onClick?: (e: React.MouseEvent) => void;
 };
 
-export function SidebarOption({ Icon, withIconBg, title, onClick }: Props) {
+export function SidebarOption({
+  Icon,
+  withIconBg,
+  actived,
+  title,
+  onClick,
+}: Props) {
   return (
     <SidebarOptionContainer
       withIconBg={withIconBg}
+      actived={actived}
       role="button"
       tabIndex={0}
       onClick={onClick}
     >
-      {Icon && <Icon fontSize="small" />}
+      {Icon ? <Icon fontSize="small" /> : <StyledHash>#</StyledHash>}
       {title && <StyledTitle>{title}</StyledTitle>}
     </SidebarOptionContainer>
   );
 }
 
-type SidebarOptionContainerProps = Pick<Props, 'onClick' | 'withIconBg'>;
+type SidebarOptionContainerProps = Pick<
+  Props,
+  'onClick' | 'withIconBg' | 'actived'
+>;
 
 const SidebarOptionContainer = styled.div<SidebarOptionContainerProps>`
   display: flex;
@@ -35,13 +46,22 @@ const SidebarOptionContainer = styled.div<SidebarOptionContainerProps>`
   line-height: 28px;
   padding: 0 16px;
   font-size: 15px;
-  color: ${(props) => `rgba(${props.theme.colors['sidebar-text']},1)`};
+  color: ${(props) =>
+    props.actived
+      ? `rgba(${props.theme.colors['sidebar-text--selected']},1)`
+      : `rgba(${props.theme.colors['sidebar-text']},1)`};
+  background-color: ${(props) =>
+    props.actived
+      ? `rgba(${props.theme.colors['sidebar-bg--selected']},1)`
+      : 'inherit'};
   cursor: ${(props) =>
     typeof props.onClick === 'function' ? 'pointer' : 'inherit'};
 
   :hover {
     background-color: ${(props) =>
-      typeof props.onClick === 'function'
+      props.actived
+        ? `rgba(${props.theme.colors['sidebar-bg--selected']},1)`
+        : typeof props.onClick === 'function'
         ? `rgba(${props.theme.colors['sidebar-bg--hover']},1)`
         : 'inherit'};
   }
@@ -64,4 +84,14 @@ const StyledTitle = styled.div`
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
+`;
+
+const StyledHash = styled.span`
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  margin-right: 6px;
 `;
