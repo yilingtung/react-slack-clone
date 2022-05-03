@@ -1,14 +1,16 @@
 import styled from 'styled-components';
+import ChatWorkspace from '../../components/ChatWorkspace';
 
 export function Home() {
-  return <HomeWrapper>home</HomeWrapper>;
+  return (
+    <HomeWrapper>
+      <ChatWorkspace />
+    </HomeWrapper>
+  );
 }
 
 const HomeWrapper = styled.div`
+  flex: 1;
   width: 100%;
-  height: ${(props) =>
-    `calc(100vh - ${props.theme.sizes['navigation_height']}px)`};
-  background-color: ${(props) =>
-    `rgba(${props.theme.colors['primary_background']},1)`};
-  overflow-y: auto;
+  overflow: hidden;
 `;

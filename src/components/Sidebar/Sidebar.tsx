@@ -16,16 +16,15 @@ import FirebaseService from '../../services/firebaseService';
 import {
   selectMobileSidebarOpen,
   setMobileSidebarOpen,
-  selectRoomId,
-  setRoomId,
 } from '../../features/globalSlice';
-import SidebarOption from '../SidebarOption';
+import { selectChat, setSelectedRoomId } from '../../features/chatSlice';
 import { db } from '../../lib/firebase';
+import SidebarOption from '../SidebarOption';
 
 export function Sidebar() {
   const isLg = useBreakpoint(up('lg'));
   const isMobileSidebarOpen = useAppSelector(selectMobileSidebarOpen);
-  const activeRoomId = useAppSelector(selectRoomId);
+  const { selectedRoomId } = useAppSelector(selectChat);
   const dispatch = useAppDispatch();
   const [channels] = useCollection(collection(db, 'rooms'));
 
@@ -35,7 +34,7 @@ export function Sidebar() {
 
   const handleChannelSelect = useCallback(
     async (roomId: string) => {
-      dispatch(setRoomId(roomId));
+      dispatch(setSelectedRoomId(roomId));
     },
     [dispatch]
   );
@@ -74,7 +73,7 @@ export function Sidebar() {
           <SidebarOption
             key={doc.id}
             title={doc.data().name}
-            actived={activeRoomId === doc.id}
+            actived={selectedRoomId === doc.id}
             onClick={() => handleChannelSelect(doc.id)}
           />
         ))}
