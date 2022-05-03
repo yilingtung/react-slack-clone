@@ -7,6 +7,7 @@ import Drawer from '@material-ui/core/Drawer';
 import CreateOutlinedIcon from '@material-ui/icons/CreateOutlined';
 import KeyboardArrowDownOutlinedIcon from '@material-ui/icons/KeyboardArrowDownOutlined';
 import InsertCommentOutlinedIcon from '@material-ui/icons/InsertCommentOutlined';
+import AddIcon from '@material-ui/icons/Add';
 
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import {
@@ -45,13 +46,8 @@ export function Sidebar() {
         </CreateButton>
       </SidebarHeader>
       <SidebarBody>
-        {Array.from(Array(12).keys()).map((element) => (
-          <SidebarOption
-            key={element}
-            Icon={InsertCommentOutlinedIcon}
-            title="Threads"
-          />
-        ))}
+        <SidebarOption Icon={InsertCommentOutlinedIcon} title="Threads" />
+        <SidebarOption Icon={AddIcon} withIconBg title="Add Channels" />
       </SidebarBody>
     </SidebarContainer>
   );
