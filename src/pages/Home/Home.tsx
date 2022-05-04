@@ -1,12 +1,7 @@
 import styled from 'styled-components';
-import ChatWorkspace from '../../components/ChatWorkspace';
 
 export function Home() {
-  return (
-    <HomeWrapper>
-      <ChatWorkspace />
-    </HomeWrapper>
-  );
+  return <HomeWrapper>Go chat now</HomeWrapper>;
 }
 
 const HomeWrapper = styled.div`

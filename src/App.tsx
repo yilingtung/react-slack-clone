@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import ThemeWrapper from './components/ThemeWrapper';
 import LayoutMain from './components/LayoutMain';
 import Home from './pages/Home';
+import ChatRoom from './pages/ChatRoom';
 
 import './App.css';
 
@@ -14,6 +15,7 @@ function App() {
           <Routes>
             <Route path="/" element={<LayoutMain />}>
               <Route index element={<Home />} />
+              <Route path=":roomId" element={<ChatRoom />} />
             </Route>
           </Routes>
         </BrowserRouter>

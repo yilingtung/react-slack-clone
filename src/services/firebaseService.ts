@@ -1,16 +1,29 @@
-import { collection, addDoc } from 'firebase/firestore';
+import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 import { db } from '../lib/firebase';
+
+type SendMessageFunc = (params: {
+  roomId: string;
+  message: string;
+}) => Promise<void>;
 
 export class DatabaseService {
   createChannel = async (channelName?: string) => {
     if (!channelName) {
       throw new Error('Empty Channel Name.');
     }
-    const col = collection(db, 'rooms');
-    const docRef = await addDoc(col, {
+    const colRef = collection(db, 'rooms');
+    const docRef = await addDoc(colRef, {
       name: channelName,
     });
     return docRef;
+  };
+  sendMessage: SendMessageFunc = async ({ roomId, message }) => {
+    const data = {
+      content: message,
+      timestamp: serverTimestamp(),
+    };
+    const col = collection(db, 'rooms', roomId, 'messages');
+    await addDoc(col, data);
   };
 }
 

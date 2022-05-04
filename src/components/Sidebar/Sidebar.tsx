@@ -4,6 +4,7 @@ import { up } from 'styled-breakpoints';
 import { useBreakpoint } from 'styled-breakpoints/react-styled';
 import { collection } from 'firebase/firestore';
 import { useCollection } from 'react-firebase-hooks/firestore';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import Drawer from '@material-ui/core/Drawer';
 import CreateOutlinedIcon from '@material-ui/icons/CreateOutlined';
@@ -17,14 +18,14 @@ import {
   selectMobileSidebarOpen,
   setMobileSidebarOpen,
 } from '../../features/globalSlice';
-import { selectChat, setSelectedRoomId } from '../../features/chatSlice';
 import { db } from '../../lib/firebase';
 import SidebarOption from '../SidebarOption';
 
 export function Sidebar() {
+  const navigate = useNavigate();
+  const { roomId } = useParams();
   const isLg = useBreakpoint(up('lg'));
   const isMobileSidebarOpen = useAppSelector(selectMobileSidebarOpen);
-  const { selectedRoomId } = useAppSelector(selectChat);
   const dispatch = useAppDispatch();
   const [channels] = useCollection(collection(db, 'rooms'));
 
@@ -33,9 +34,10 @@ export function Sidebar() {
   }, [dispatch]);
 
   const handleChannelSelect = useCallback(
-    async (roomId: string) => {
-      dispatch(setSelectedRoomId(roomId));
+    async (id: string) => {
+      navigate(`/${id}`);
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [dispatch]
   );
 
@@ -43,8 +45,9 @@ export function Sidebar() {
     const channelName = prompt('Please enter the channel name.');
     if (channelName) {
       const response = await FirebaseService.createChannel(channelName);
-      console.log(response);
+      navigate(`/${response.id}`);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -73,7 +76,7 @@ export function Sidebar() {
           <SidebarOption
             key={doc.id}
             title={doc.data().name}
-            actived={selectedRoomId === doc.id}
+            actived={roomId === doc.id}
             onClick={() => handleChannelSelect(doc.id)}
           />
         ))}
