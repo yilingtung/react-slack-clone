@@ -45,8 +45,8 @@ const ChatInputContainer = styled.div`
   flex-shrink: 0;
   width: 100%;
   color: rgba(${(props) => props.theme.colors['primary_foreground']}, 1);
-  min-height: 74px;
-  padding: 12px 20px 24px;
+  min-height: 64px;
+  padding: 12px 20px 12px;
 
   > form {
     display: flex;

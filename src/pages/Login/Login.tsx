@@ -46,6 +46,7 @@ const InnerContainer = styled.div`
   border-radius: 8px;
   background-color: rgba(${(props) => props.theme.colors['login-inner-bg']}, 1);
   color: rgba(${(props) => props.theme.colors['login-text']}, 1);
+  text-align: center;
 
   > :not(:last-child) {
     margin-bottom: 32px;
