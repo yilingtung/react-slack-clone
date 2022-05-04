@@ -24,18 +24,29 @@ import {
 } from '../../features/globalSlice';
 import { auth, db } from '../../lib/firebase';
 import SidebarOption from '../SidebarOption';
+import Switch from '@material-ui/core/Switch';
+import {
+  selectThemeMode,
+  ThemeModeEnum,
+  toggleThemeMode,
+} from '../../features/themeSlice';
 
 export function Sidebar() {
   const navigate = useNavigate();
   const { roomId } = useParams();
   const isLg = useBreakpoint(up('lg'));
   const isMobileSidebarOpen = useAppSelector(selectMobileSidebarOpen);
+  const themeMode = useAppSelector(selectThemeMode);
   const dispatch = useAppDispatch();
   const [channels] = useCollection(collection(db, 'rooms'));
   const [user] = useAuthState(auth);
 
   const closeMobileSidebar = useCallback(() => {
     dispatch(setMobileSidebarOpen(false));
+  }, [dispatch]);
+
+  const handleChange = useCallback(() => {
+    dispatch(toggleThemeMode());
   }, [dispatch]);
 
   const handleChannelSelect = useCallback(
@@ -100,6 +111,13 @@ export function Sidebar() {
           />
         </SidebarList>
       </SidebarBody>
+      <SidebarBottom>
+        <Switch
+          checked={themeMode === ThemeModeEnum.LIGHT}
+          size="small"
+          onChange={handleChange}
+        />
+      </SidebarBottom>
     </SidebarContainer>
   );
 }
@@ -110,7 +128,6 @@ const SidebarContainer = styled(Drawer)`
   width: ${(props) => `${props.theme.sizes['sidebar_width']}px`};
   height: ${(props) =>
     `calc(100vh - ${props.theme.sizes['navigation_height']}px)`};
-  background-color: ${(props) => `rgba(${props.theme.colors['sidebar-bg']},1)`};
 
   > .MuiBackdrop-root {
     background-color: transparent;
@@ -187,4 +204,24 @@ const SidebarList = styled.div`
   display: flex;
   flex-direction: column;
   padding: 12px 0;
+`;
+
+const SidebarBottom = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding: 10px 16px;
+  box-shadow: 0 0 0 1px
+    ${(props) => `rgba(${props.theme.colors['navigation-text']},0.1)`};
+
+  > .MuiSwitch-root {
+    align-self: flex-end;
+
+    .MuiSwitch-colorSecondary.Mui-checked {
+      color: white;
+    }
+
+    .MuiSwitch-colorSecondary.Mui-checked + .MuiSwitch-track {
+      background-color: white;
+    }
+  }
 `;

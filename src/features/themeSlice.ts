@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { RootState } from '../app/store';
+import { AppThunk, RootState } from '../app/store';
 
 export enum ThemeModeEnum {
   LIGHT = 'light',
@@ -29,5 +29,16 @@ export const themeSlice = createSlice({
 export const { setThemeMode } = themeSlice.actions;
 
 export const selectThemeMode = (state: RootState) => state.theme.themeMode;
+
+export const toggleThemeMode = (): AppThunk => (dispatch, getState) => {
+  const currentValue = selectThemeMode(getState());
+  const nextValue =
+    currentValue === ThemeModeEnum.DARK
+      ? ThemeModeEnum.LIGHT
+      : ThemeModeEnum.DARK;
+
+  dispatch(setThemeMode(nextValue));
+  localStorage.setItem('slack-theme', nextValue);
+};
 
 export default themeSlice.reducer;
