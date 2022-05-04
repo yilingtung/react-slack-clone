@@ -8,8 +8,6 @@ import Home from './pages/Home';
 import ChatRoom from './pages/ChatRoom';
 import Login from './pages/Login';
 
-import './App.css';
-
 function App() {
   const [user, loading] = useAuthState(auth);
 
