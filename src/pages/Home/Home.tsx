@@ -11,7 +11,7 @@ export function Home() {
       <p>
         To learn all about using Slack, click the help icon
         <HelpOutlineIcon />
-        in the top right corner of the app.
+        in the top right corner of the app. But nothing will happen... Sorry 🥲
       </p>
       <p>Just feel free to leave some message in anywhere you like.</p>
       <p>Have a nice day!</p>
