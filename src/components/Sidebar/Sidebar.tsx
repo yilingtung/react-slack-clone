@@ -4,13 +4,17 @@ import { up } from 'styled-breakpoints';
 import { useBreakpoint } from 'styled-breakpoints/react-styled';
 import { collection } from 'firebase/firestore';
 import { useCollection } from 'react-firebase-hooks/firestore';
+import { useAuthState } from 'react-firebase-hooks/auth';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import Drawer from '@material-ui/core/Drawer';
 import CreateOutlinedIcon from '@material-ui/icons/CreateOutlined';
-import KeyboardArrowDownOutlinedIcon from '@material-ui/icons/KeyboardArrowDownOutlined';
 import InsertCommentOutlinedIcon from '@material-ui/icons/InsertCommentOutlined';
 import AddIcon from '@material-ui/icons/Add';
+import ForumOutlinedIcon from '@material-ui/icons/ForumOutlined';
+import AlternateEmailOutlinedIcon from '@material-ui/icons/AlternateEmailOutlined';
+import ApartmentOutlinedIcon from '@material-ui/icons/ApartmentOutlined';
+import ArrowDropDownOutlinedIcon from '@material-ui/icons//ArrowDropDownOutlined';
 
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import FirebaseService from '../../services/firebaseService';
@@ -18,7 +22,7 @@ import {
   selectMobileSidebarOpen,
   setMobileSidebarOpen,
 } from '../../features/globalSlice';
-import { db } from '../../lib/firebase';
+import { auth, db } from '../../lib/firebase';
 import SidebarOption from '../SidebarOption';
 
 export function Sidebar() {
@@ -28,6 +32,7 @@ export function Sidebar() {
   const isMobileSidebarOpen = useAppSelector(selectMobileSidebarOpen);
   const dispatch = useAppDispatch();
   const [channels] = useCollection(collection(db, 'rooms'));
+  const [user] = useAuthState(auth);
 
   const closeMobileSidebar = useCallback(() => {
     dispatch(setMobileSidebarOpen(false));
@@ -61,31 +66,39 @@ export function Sidebar() {
     >
       <SidebarHeader>
         <WorkspaceNameContainer>
-          <button>
-            <span>tungyiling</span>
-            <StyledArrowIcon fontSize="small" />
-          </button>
+          <span>{user?.displayName}'s workspace</span>
         </WorkspaceNameContainer>
         <CreateButton>
-          <CreateOutlinedIcon />
+          <CreateOutlinedIcon fontSize="small" />
         </CreateButton>
       </SidebarHeader>
       <SidebarBody>
         <SidebarOption Icon={InsertCommentOutlinedIcon} title="Threads" />
-        {channels?.docs.map((doc) => (
-          <SidebarOption
-            key={doc.id}
-            title={doc.data().name}
-            actived={roomId === doc.id}
-            onClick={() => handleChannelSelect(doc.id)}
-          />
-        ))}
+        <SidebarOption Icon={ForumOutlinedIcon} title="All DMs" />
         <SidebarOption
-          Icon={AddIcon}
-          withIconBg
-          title="Add Channels"
-          onClick={handleChannelCreate}
+          Icon={AlternateEmailOutlinedIcon}
+          title="Mentions & reactions"
         />
+        <SidebarOption Icon={ApartmentOutlinedIcon} title="Slack Connect" />
+        <SidebarList>
+          <SidebarOption Icon={ArrowDropDownOutlinedIcon} title="Channels" />
+          {channels?.docs.map((doc) => (
+            <SidebarOption
+              key={doc.id}
+              title={doc.data().name}
+              actived={roomId === doc.id}
+              levels={1}
+              onClick={() => handleChannelSelect(doc.id)}
+            />
+          ))}
+          <SidebarOption
+            Icon={AddIcon}
+            withIconBg
+            title="Add Channels"
+            levels={1}
+            onClick={handleChannelCreate}
+          />
+        </SidebarList>
       </SidebarBody>
     </SidebarContainer>
   );
@@ -125,11 +138,6 @@ const SidebarHeader = styled.div`
   padding: 0 16px;
   box-shadow: 0 1px 0 0
     ${(props) => `rgba(${props.theme.colors['navigation-text']},0.1)`};
-
-  :hover {
-    background-color: ${(props) =>
-      `rgba(${props.theme.colors['sidebar-bg--hover']},1)`};
-  }
 `;
 
 const CreateButton = styled.button`
@@ -143,38 +151,28 @@ const CreateButton = styled.button`
   align-items: center;
   justify-content: center;
   background-color: white;
+  color: rgba(${(props) => props.theme.colors['sidebar-bg']}, 1);
 `;
 
 const WorkspaceNameContainer = styled.div`
   flex: 1;
   min-width: 0;
+  overflow: hidden;
 
-  > button {
-    display: flex;
-    align-items: center;
-    width: 100%;
-    padding: 0;
-    border: none;
-    background-color: transparent;
-
-    > span {
-      display: block;
-      min-width: 0;
-      font-size: 18px;
-      line-height: 1.33334;
-      font-weight: 900;
-      text-overflow: ellipsis;
-      overflow: hidden;
-      white-space: nowrap;
-      color: ${(props) =>
-        `rgba(${props.theme.colors['sidebar-text--selected']},1)`};
-    }
+  > span {
+    display: block;
+    min-width: 0;
+    font-size: 18px;
+    line-height: 1.33334;
+    text-align: left;
+    font-weight: 700;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    color: ${(props) =>
+      `rgba(${props.theme.colors['sidebar-text--selected']},1)`};
+    margin-right: 12px;
   }
-`;
-
-const StyledArrowIcon = styled(KeyboardArrowDownOutlinedIcon)`
-  color: ${(props) =>
-    `rgba(${props.theme.colors['sidebar-text--selected']},1)`};
 `;
 
 const SidebarBody = styled.div`
@@ -182,4 +180,11 @@ const SidebarBody = styled.div`
   flex-direction: column;
   flex-grow: 1;
   overflow-y: auto;
+  padding: 12px 0;
+`;
+
+const SidebarList = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding: 12px 0;
 `;

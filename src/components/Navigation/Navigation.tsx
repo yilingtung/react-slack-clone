@@ -10,15 +10,36 @@ import {
   setMobileSidebarOpen,
 } from '../../features/globalSlice';
 import { useBreakpoint } from 'styled-breakpoints/react-styled';
+import { auth } from '../../lib/firebase';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import Popover from '@material-ui/core/Popover';
+import { useCallback, useState } from 'react';
+import Divider from '@material-ui/core/Divider';
+import { signOut } from 'firebase/auth';
 
 type Props = {
   className?: string;
 };
 
 export function Navigation({ className }: Props) {
+  const [anchorEl, setAnchorEl] = useState<Element | null>(null);
+  const open = Boolean(anchorEl);
   const isLg = useBreakpoint(up('lg'));
   const isMobileSidebarOpen = useAppSelector(selectMobileSidebarOpen);
   const dispatch = useAppDispatch();
+  const [user] = useAuthState(auth);
+
+  const handleClick = useCallback((event: React.MouseEvent<Element>) => {
+    setAnchorEl(event.currentTarget);
+  }, []);
+
+  const handleClose = useCallback(() => {
+    setAnchorEl(null);
+  }, []);
+
+  const logout = useCallback(() => {
+    signOut(auth);
+  }, []);
 
   return (
     <NavigationContainer className={className} role="navigation">
@@ -41,7 +62,36 @@ export function Navigation({ className }: Props) {
       </SearchContainer>
       <RightContainer>
         <HelpOutlineIcon fontSize="small" />
-        <Avatar variant="rounded" />
+        <Avatar
+          variant="rounded"
+          src={user?.photoURL || undefined}
+          onClick={handleClick}
+        />
+
+        <StyledPopover
+          id={open ? 'simple-popover' : undefined}
+          open={open}
+          anchorEl={anchorEl}
+          onClose={handleClose}
+          anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'right',
+          }}
+          transformOrigin={{
+            vertical: 'top',
+            horizontal: 'right',
+          }}
+        >
+          <PopoverHeader>
+            <Avatar variant="rounded" src={user?.photoURL || undefined} />
+            <h3>{user?.displayName}</h3>
+          </PopoverHeader>
+          <Divider />
+          <button onClick={logout}>
+            Sign up of {user?.displayName}'s workspaceworkspaceworkspace
+            workspace
+          </button>
+        </StyledPopover>
       </RightContainer>
     </NavigationContainer>
   );
@@ -147,5 +197,76 @@ const RightContainer = styled.div`
     :hover {
       opacity: 0.8;
     }
+  }
+`;
+
+const StyledPopover = styled(Popover)`
+  > .MuiPaper-root {
+    width: 300px;
+    max-width: 360px;
+    min-width: 200px;
+    max-height: calc(100vh - 62px);
+    margin-top: 6px;
+    padding: 12px 0;
+    color: rgba(${(props) => props.theme.colors['popover-text']}, 1);
+    background-color: rgba(${(props) => props.theme.colors['popover-bg']}, 1);
+    border-radius: 6px;
+    user-select: none;
+    overflow-y: auto;
+
+    > .MuiDivider-root {
+      margin: 8px 0;
+    }
+
+    > button {
+      display: block;
+      width: 100%;
+      padding: 0 24px;
+      line-height: 28px;
+      text-align: start;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      border: none;
+      outline: none;
+      cursor: pointer;
+      background-color: transparent;
+      color: rgba(${(props) => props.theme.colors['popover-text']}, 1);
+
+      :hover {
+        color: rgba(
+          ${(props) => props.theme.colors['sidebar-text--selected']},
+          1
+        );
+        background-color: rgba(
+          ${(props) => props.theme.colors['sidebar-bg--selected']},
+          1
+        );
+      }
+    }
+  }
+`;
+
+const PopoverHeader = styled.div`
+  display: flex;
+  align-items: center;
+  padding: 8px 24px;
+
+  > .MuiAvatar-root {
+    display: flex;
+    flex-shrink: 0;
+    height: 36px;
+    width: 36px;
+  }
+
+  > h3 {
+    display: block;
+    min-width: 0;
+    font-size: 15px;
+    font-weight: 900;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    margin-left: 12px;
   }
 `;

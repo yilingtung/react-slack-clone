@@ -8,6 +8,7 @@ type Props = {
   withIconBg?: boolean;
   actived?: boolean;
   title?: string;
+  levels?: number;
   onClick?: (e: React.MouseEvent) => void;
 };
 
@@ -16,12 +17,14 @@ export function SidebarOption({
   withIconBg,
   actived,
   title,
+  levels = 0,
   onClick,
 }: Props) {
   return (
     <SidebarOptionContainer
       withIconBg={withIconBg}
       actived={actived}
+      levels={levels}
       role="button"
       tabIndex={0}
       onClick={onClick}
@@ -34,7 +37,7 @@ export function SidebarOption({
 
 type SidebarOptionContainerProps = Pick<
   Props,
-  'onClick' | 'withIconBg' | 'actived'
+  'onClick' | 'withIconBg' | 'actived' | 'levels'
 >;
 
 const SidebarOptionContainer = styled.div<SidebarOptionContainerProps>`
@@ -44,7 +47,10 @@ const SidebarOptionContainer = styled.div<SidebarOptionContainerProps>`
   width: 100%;
   height: 28px;
   line-height: 28px;
-  padding: 0 16px;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-right: 16px;
+  padding-left: calc(16px + 8px * ${(props) => props.levels});
   font-size: 15px;
   color: ${(props) =>
     props.actived

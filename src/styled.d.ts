@@ -13,6 +13,12 @@ declare module 'styled-components' {
       primary_background: string;
       inverted_foreground: string;
       inverted_background: string;
+      'login-bg': string;
+      'login-inner-bg': string;
+      'login-text': string;
+      'login-button': string;
+      'popover-bg': string;
+      'popover-text': string;
       'navigation-bg': string;
       'navigation-text': string;
       'sidebar-bg': string;

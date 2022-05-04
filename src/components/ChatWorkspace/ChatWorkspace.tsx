@@ -8,11 +8,12 @@ import {
   selectChatChannelMessage,
   setChannelMessage,
 } from '../../features/chatSlice';
-import { db } from '../../lib/firebase';
+import { auth, db } from '../../lib/firebase';
 import FirebaseService from '../../services/firebaseService';
 import ChatInput from '../ChatInput';
 import ChatMessage from '../ChatMessage';
 import Loading from '../Loading';
+import { useAuthState } from 'react-firebase-hooks/auth';
 
 type Props = {
   roomName?: string;
@@ -31,6 +32,7 @@ export function ChatWorkspace({ roomName }: Props) {
         orderBy('timestamp', 'asc')
       )
   );
+  const [user] = useAuthState(auth);
 
   const inputMessage = useAppSelector(selectChatChannelMessage)[roomId];
   const isInputEmpty = !(typeof inputMessage === 'string' && inputMessage);
@@ -45,6 +47,11 @@ export function ChatWorkspace({ roomName }: Props) {
   const handleSubmit = useCallback(() => {
     if (roomId !== undefined) {
       FirebaseService.sendMessage({
+        author: {
+          id: user?.uid || '',
+          name: user?.displayName || '',
+          avatar: user?.photoURL || '',
+        },
         roomId,
         message: inputMessage,
       })
@@ -56,7 +63,7 @@ export function ChatWorkspace({ roomName }: Props) {
           chatbottomRef?.current?.scrollIntoView({ behavior: 'smooth' });
         });
     }
-  }, [dispatch, inputMessage, roomId]);
+  }, [dispatch, inputMessage, roomId, user]);
 
   useEffect(() => {
     chatbottomRef?.current?.scrollIntoView({ behavior: 'auto' });
@@ -76,18 +83,13 @@ export function ChatWorkspace({ roomName }: Props) {
         <>
           <ChatMessages>
             {messages?.docs.map((doc) => {
-              const { content, timestamp } = doc.data();
+              const { author, content, timestamp } = doc.data();
               return (
                 <ChatMessage
                   key={doc.id}
                   content={content}
                   timestamp={timestamp}
-                  auth={{
-                    id: '123',
-                    name: 'irene',
-                    avatar:
-                      'https://images.unsplash.com/photo-1650493102770-2f61c77d490f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=987&q=80',
-                  }}
+                  auth={author}
                 />
               );
             })}

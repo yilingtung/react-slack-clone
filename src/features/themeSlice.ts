@@ -10,7 +10,7 @@ interface CounterState {
   themeMode: ThemeModeEnum;
 }
 
-const defaultMode = localStorage.getItem('theme-mode') || ThemeModeEnum.LIGHT;
+const defaultMode = localStorage.getItem('theme-mode') || ThemeModeEnum.DARK;
 
 const initialState: CounterState = {
   themeMode: defaultMode as ThemeModeEnum,
