@@ -1,6 +1,47 @@
-# Getting Started with Create React App
+<p align="center">
+    <img src="./public/slack-logo.svg" alt="Repository logo" width="72" height="72">
+</p>
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app), using the [Redux](https://redux.js.org/) and [Redux Toolkit](https://redux-toolkit.js.org/) TS template.
+<h3 align="center">React Slack Clone</h3>
+
+<p align="center">
+  Slack clone built with React + styled-components + TypeScript + Redux + Firebase
+  <br><br>
+  <a href="https://slack-clone-service.web.app"><strong>Visit the App »</strong></a>
+  <br>
+</p>
+
+## Introduction
+
+React Slack Clone is a simple application of Slack clone. <br>
+This is just built for practice so it doesn't support fully features of slack.
+
+## Live Demo
+
+Link: [https://slack-clone-service.web.app/](https://slack-clone-service.web.app/)
+
+## Screenshots
+
+<p align="center">
+   <img src="https://user-images.githubusercontent.com/13029568/166864944-cc64569f-07d6-496a-80c4-7f72d3342612.jpg" width="600" >
+</p>
+<p align="center">
+   <img src="https://user-images.githubusercontent.com/13029568/166865117-022cea90-6712-4663-8001-5f01d0f72ed3.gif" width="600" >
+</p>
+
+## Features
+
+- Implement real-time chat room with Firebase Realtime Database.
+- Implement dark mode with styled-components themes.
+- implement Google sign-in with Firebase Authentication.
+
+## Built With
+
+- React
+- styled-components
+- Redux Toolkit
+- TypeScript
+- Firebase
 
 ## Available Scripts
 
