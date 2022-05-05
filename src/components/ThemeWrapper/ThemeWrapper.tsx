@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { ThemeProvider } from 'styled-components';
 
-import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks/useRedux';
 import {
   selectThemeMode,
   setThemeMode,

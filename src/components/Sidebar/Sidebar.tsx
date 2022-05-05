@@ -16,7 +16,7 @@ import AlternateEmailOutlinedIcon from '@material-ui/icons/AlternateEmailOutline
 import ApartmentOutlinedIcon from '@material-ui/icons/ApartmentOutlined';
 import ArrowDropDownOutlinedIcon from '@material-ui/icons//ArrowDropDownOutlined';
 
-import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks/useRedux';
 import FirebaseService from '../../services/firebaseService';
 import {
   selectMobileSidebarOpen,

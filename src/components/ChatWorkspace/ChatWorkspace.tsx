@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { collection, doc, orderBy, query } from 'firebase/firestore';
 import { useCollection } from 'react-firebase-hooks/firestore';
 import { useParams } from 'react-router-dom';
-import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks/useRedux';
 import {
   selectChatChannelMessage,
   setChannelMessage,

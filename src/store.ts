@@ -1,8 +1,8 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
-import themeReducer from '../features/themeSlice';
-import globalReducer from '../features/globalSlice';
-import chatReducer from '../features/chatSlice';
-import counterReducer from '../features/counterSlice';
+import themeReducer from './features/themeSlice';
+import globalReducer from './features/globalSlice';
+import chatReducer from './features/chatSlice';
+import counterReducer from './features/counterSlice';
 
 export const store = configureStore({
   reducer: {
